@@ -1,0 +1,7 @@
+<th *ngIf="hasDetails"></th>
+<ng-container *ngFor="let header of columns" [formGroup]="parentForm">
+    <th class="ngx-ez-table__filter">
+        <input type="text" *ngIf="header.searchable || header.searchable === undefined" [placeholder]="header.title"
+            [formControlName]="header.accessor" />
+    </th>
+</ng-container>
