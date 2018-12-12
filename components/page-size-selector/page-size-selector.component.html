@@ -1,0 +1,5 @@
+<ng-container [formGroup]="form">
+    <select formControlName="pageSize">
+        <option *ngFor="let pageSizeOption of pageSizeOptions" [value]="pageSizeOption">{{pageSizeOption}}</option>
+    </select>
+</ng-container>
