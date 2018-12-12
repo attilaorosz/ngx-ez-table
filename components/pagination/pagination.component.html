@@ -1,0 +1,18 @@
+<nav class="ngx-ez-table__pagination">
+    <ul class="ngx-ez-table__pagination-set">
+
+        <li class="ngx-ez-table__pagination-btn--previous" (click)="onPrev()">«</li>
+
+        <ng-container *ngFor="let page of pages; let i = index;">
+            <li 
+            [class.ngx-ez-table__pagination-item]="page.pageNum !== _currentPage" 
+            [class.ngx-ez-table__pagination-item--active]="page.pageNum === _currentPage" 
+            class="ngx-ez-table__pagination-item" (click)="onPageSwitch(page.pageNum)">
+                {{page.label}}
+            </li>
+        </ng-container>
+
+        <li class="ngx-ez-table__pagination-btn--next" (click)="onNext()">»</li>
+
+    </ul>
+</nav>
