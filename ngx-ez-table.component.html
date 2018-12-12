@@ -1,0 +1,74 @@
+<div class="ngx-ez-table">
+    <div class="ngx-ez-table__loading" *ngIf="isLoading"></div>
+    <table class="ngx-ez-table__wrapper">
+        <thead>
+            <tr>
+                <th *ngIf="config.rowDetails && detailsRef"></th>
+                <th *ngFor="let header of columns" class="{{header.headerClass || ''}}" (click)="onSortByColumn(header.accessor)">
+                    {{header.title}}
+                    <ng-container *ngIf="sortByColumn === header.accessor">
+                        <span class="ngx-ez-table__sort-icon" *ngIf="sortDirection === 'ASC'">▲</span>
+                        <span class="ngx-ez-table__sort-icon" *ngIf="sortDirection === 'DESC'">▼</span>
+                    </ng-container>
+                </th>
+            </tr>
+            <tr ngx-ez-table-filters [hasDetails]="config.rowDetails && detailsRef" *ngIf="config.searchable" [columns]="columns" #filter></tr>
+        </thead>
+
+        <tbody>
+
+            <!-- Default Renderer -->
+            <ng-container *ngIf="!rowTemplateRef && visibleRows.length > 0">
+                <ng-container *ngFor="let row of visibleRows">
+                    <tr>
+                        <td class="ngx-ez-table__row-details-toggle" *ngIf="config.rowDetails && detailsRef" (click)="toggleRowDetails(row.ngxEzTableId)">
+                            <ng-container *ngIf="openDetails.has(row.ngxEzTableId)">▲</ng-container>
+                            <ng-container *ngIf="!openDetails.has(row.ngxEzTableId)">▼</ng-container>
+                        </td>
+                        <td *ngFor="let cell of columns" class="{{cell.cellClass || ''}}">
+                            {{deepFind(row, cell.accessor)}}
+                        </td>
+                    </tr>
+                    <ng-container *ngIf="config.rowDetails && detailsRef && openDetails.has(row.ngxEzTableId)">
+                        <tr class="ngx-ez-table__row-details">
+                            <td [colSpan]="columns.length">
+                                <ng-template [ngTemplateOutlet]="detailsRef" [ngTemplateOutletContext]="{$implicit: row}"></ng-template>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+
+            <!-- User defined renderer -->
+            <ng-container *ngIf="rowTemplateRef">
+                <ng-container *ngFor="let row of visibleRows; let i = index;">
+                    <tr [class]="getRowClass(row)">
+                        <td class="ngx-ez-table__row-details-toggle" *ngIf="config.rowDetails && detailsRef" (click)="toggleRowDetails(row.ngxEzTableId)">
+                            <ng-container *ngIf="openDetails.has(row.ngxEzTableId)">▲</ng-container>
+                            <ng-container *ngIf="!openDetails.has(row.ngxEzTableId)">▼</ng-container>
+                        </td>
+                        <ng-template [ngTemplateOutlet]="rowTemplateRef" [ngTemplateOutletContext]="{$implicit: row}"></ng-template>
+                    </tr>
+                    <ng-container *ngIf="config.rowDetails && detailsRef && openDetails.has(row.ngxEzTableId)">
+                        <tr class="ngx-ez-table__row-details">
+                            <td class="ngx-ez-table__row-details-wrapper" [colSpan]="columns.length + 1">
+                                <ng-template [ngTemplateOutlet]="detailsRef" [ngTemplateOutletContext]="{$implicit: row}"></ng-template>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </tbody>
+    </table>
+
+    <div class="ngx-ez-table__footer" *ngIf="config.pagination || config.pagination">
+        <div class="ngx-ez-table__footer-left">
+            <ngx-ez-table-pagination [totalPages]="totalPages" [currentPage]="currentPage" *ngIf="config.pagination"
+                #pagination></ngx-ez-table-pagination>
+        </div>
+        <div class="ngx-ez-table__footer-right">
+            <ngx-ez-table-page-size-selector [pageSize]="pageSize" [pageSizeOptions]="config.pageSizeOptions"  *ngIf="config.pageSizeSelector"
+                #pageSizeSelector></ngx-ez-table-page-size-selector>
+        </div>
+    </div>
+</div>
