@@ -1,0 +1,45 @@
+.ngx-ez-table__pagination {
+    font-size: 12px;
+    &-set {
+        margin: 0;
+        padding: 0;
+    }
+    &-item, &-btn {
+        padding: 5px;
+        border-style: solid;
+        border-color: #ddd;
+        border-width: 1px 0;
+        cursor: pointer;
+        min-width: 35px;
+        height: 35px;
+        text-align: center;
+        display: inline-block;
+        vertical-align: middle;
+        user-select: none;
+    }
+    &-item {
+        border-left-width: 1px;
+        line-height: 25px;
+
+        &--active {
+            @extend .ngx-ez-table__pagination-item;
+            background-color: blue;
+            color: #fff;
+        }
+    }
+    &-btn {
+        border-left-width: 1px;
+        line-height: 20px;
+        &--previous {
+            @extend .ngx-ez-table__pagination-btn;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+        &--next {
+            @extend .ngx-ez-table__pagination-btn;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+            border-right-width: 1px;
+        }
+    }
+}
